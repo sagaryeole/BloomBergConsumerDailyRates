@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://services.bloomberg.com/datalicense/dlws/ps/20071001" name="PerSecurityWS" targetNamespace="http://services.bloomberg.com/datalicense/dlws/ps/20071001" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema xmlns="http://services.bloomberg.com/datalicense/dlws/ps/20071001" elementFormDefault="qualified" targetNamespace="http://services.bloomberg.com/datalicense/dlws/ps/20071001" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:simpleType name="MarketSector">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Govt" />
+          <xs:enumeration value="Corp" />
+          <xs:enumeration value="Mtge" />
+          <xs:enumeration value="M-Mkt" />
+          <xs:enumeration value="Muni" />
+          <xs:enumeration value="Pfd" />
+          <xs:enumeration value="Equity" />
+          <xs:enumeration value="Comdty" />
+          <xs:enumeration value="Index" />
+          <xs:enumeration value="Curncy" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="InstrumentType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="AUSTRIAN" />
+          <xs:enumeration value="BB_UNIQUE" />
+          <xs:enumeration value="BELGIAN" />
+          <xs:enumeration value="BLOOMBERG" />
+          <xs:enumeration value="CATS" />
+          <xs:enumeration value="CEDEL" />
+          <xs:enumeration value="CINS" />
+          <xs:enumeration value="COMMON_NUMBER" />
+          <xs:enumeration value="CUSIP" />
+          <xs:enumeration value="CZECH" />
+          <xs:enumeration value="DUTCH" />
+          <xs:enumeration value="EUROCLEAR" />
+          <xs:enumeration value="FRENCH" />
+          <xs:enumeration value="IRISH" />
+          <xs:enumeration value="ISIN" />
+          <xs:enumeration value="ISRAELI" />
+          <xs:enumeration value="ITALY" />
+          <xs:enumeration value="JAPAN" />
+          <xs:enumeration value="LUXEMBOURG" />
+          <xs:enumeration value="SEDOL" />
+          <xs:enumeration value="SEDOL2" />
+          <xs:enumeration value="SPAIN" />
+          <xs:enumeration value="TICKER" />
+          <xs:enumeration value="TSCUSIP" />
+          <xs:enumeration value="VALOREN" />
+          <xs:enumeration value="WPK" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="SpecialChar">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="fraction" />
+          <xs:enumeration value="decimal" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="ProgramFlag">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="oneshot" />
+          <xs:enumeration value="daily" />
+          <xs:enumeration value="weekly" />
+          <xs:enumeration value="monthly" />
+          <xs:enumeration value="weekday" />
+          <xs:enumeration value="weekend" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="Version">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="new" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="DiffFlag">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="yes" />
+          <xs:enumeration value="no" />
+          <xs:enumeration value="changes" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="DateFormat">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="mmddyy" />
+          <xs:enumeration value="yyddmm" />
+          <xs:enumeration value="mmyydd" />
+          <xs:enumeration value="dmmyy" />
+          <xs:enumeration value="yyyyddmm" />
+          <xs:enumeration value="mmyyyydd" />
+          <xs:enumeration value="yyyymmdd" />
+          <xs:enumeration value="yymmdd" />
+          <xs:enumeration value="ddyymm" />
+          <xs:enumeration value="mmddyyyy" />
+          <xs:enumeration value="yyyy/mm/dd" />
+          <xs:enumeration value="ddyyyymm" />
+          <xs:enumeration value="dd-mmm-yy" />
+          <xs:enumeration value="ddmmyyyy" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="FieldType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Character" />
+          <xs:enumeration value="Numeric" />
+          <xs:enumeration value="Price" />
+          <xs:enumeration value="Security" />
+          <xs:enumeration value="Date" />
+          <xs:enumeration value="Time" />
+          <xs:enumeration value="Date/Time" />
+          <xs:enumeration value="Bulk" />
+          <xs:enumeration value="Month/Year" />
+          <xs:enumeration value="Boolean" />
+          <xs:enumeration value="Currency" />
+          <xs:enumeration value="Integer" />
+          <xs:enumeration value="Real" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="CancelHeaders">
+        <xs:all>
+          <xs:element name="programflag" type="tns:ProgramFlag" />
+        </xs:all>
+      </xs:complexType>
+      <xs:complexType name="GetCorrectionsHeaders">
+        <xs:all>
+          <xs:element minOccurs="0" name="dateformat" type="tns:DateFormat" />
+        </xs:all>
+      </xs:complexType>
+      <xs:complexType name="GetDataHeaders">
+        <xs:all>
+          <xs:element minOccurs="0" name="closingvalues" type="xs:boolean" />
+          <xs:element minOccurs="0" name="dateformat" type="tns:DateFormat" />
+          <xs:element minOccurs="0" name="derived" type="xs:boolean" />
+          <xs:element minOccurs="0" name="diffflag" type="tns:DiffFlag" />
+          <xs:element minOccurs="0" name="hist_crncy" type="xs:string" />
+          <xs:element minOccurs="0" name="historical" type="xs:boolean" />
+          <xs:element minOccurs="0" name="programflag" type="tns:ProgramFlag" />
+          <xs:element minOccurs="0" name="rundate" type="xs:string" />
+          <xs:element minOccurs="0" name="secid" type="tns:InstrumentType" />
+          <xs:element minOccurs="0" name="secmaster" type="xs:boolean" />
+          <xs:element minOccurs="0" name="sn" type="xs:int" />
+          <xs:element minOccurs="0" name="specialchar" type="tns:SpecialChar" />
+          <xs:element minOccurs="0" name="time" type="xs:string" />
+          <xs:element minOccurs="0" name="usernumber" type="xs:int" />
+          <xs:element minOccurs="0" name="version" type="tns:Version" />
+          <xs:element minOccurs="0" name="ws" type="xs:int" />
+          <xs:element minOccurs="0" name="yellowkey" type="tns:MarketSector" />
+          <xs:element minOccurs="0" name="quotecomposite" type="xs:boolean" />
+        </xs:all>
+      </xs:complexType>
+      <xs:complexType name="ScheduledHeaders">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="getdataHeaders" type="tns:GetDataHeaders" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Fields">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="field" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Overrides">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="override" type="tns:Override" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Instruments">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="instrument" type="tns:Instrument" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="InstrumentDatas">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="instrumentData" type="tns:InstrumentData" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CorrectionRecords">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="correctionRecord" type="tns:CorrectionRecord" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Instrument">
+        <xs:sequence>
+          <xs:element name="id" type="xs:string" />
+          <xs:element minOccurs="0" name="yellowkey" type="tns:MarketSector" />
+          <xs:element minOccurs="0" name="type" type="tns:InstrumentType" />
+          <xs:element minOccurs="0" name="overrides" type="tns:Overrides" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Override">
+        <xs:sequence>
+          <xs:element name="field" type="xs:string" />
+          <xs:element name="value" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DataItem">
+        <xs:sequence>
+          <xs:element name="value" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="InstrumentData">
+        <xs:annotation>
+          <xs:documentation>
+				The data for an instrument
+			</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element name="code" type="xs:string" />
+          <xs:element name="instrument" type="tns:Instrument" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="data" type="tns:Data" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CorrectionRecord">
+        <xs:annotation>
+          <xs:documentation>
+				The data for a historical price correction
+			</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element name="instrument" type="tns:Instrument" />
+          <xs:element name="field" type="xs:string" />
+          <xs:element name="oldValue" type="xs:decimal" />
+          <xs:element name="oldDateEntered" type="xs:string" />
+          <xs:element name="newValue" type="xs:decimal" />
+          <xs:element name="newDateEntered" type="xs:string" />
+          <xs:element name="timeEntered" type="xs:string" />
+          <xs:element name="exchangeIndicator" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Data">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="bulkarray" type="tns:BulkArray" />
+        </xs:sequence>
+        <xs:attribute name="value" type="xs:string" use="optional" />
+        <xs:attribute name="isArray" type="xs:boolean" use="optional" />
+        <xs:attribute name="rows" type="xs:int" use="optional" />
+      </xs:complexType>
+      <xs:complexType name="BulkArray">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="data" type="tns:BulkArrayEntry" />
+        </xs:sequence>
+        <xs:attribute name="columns" type="xs:int" use="optional" />
+      </xs:complexType>
+      <xs:complexType name="BulkArrayEntry">
+        <xs:attribute name="value" type="xs:string" />
+        <xs:attribute name="type" type="tns:FieldType" />
+      </xs:complexType>
+      <xs:complexType name="ResponseStatus">
+        <xs:sequence>
+          <xs:element name="code" type="xs:int" />
+          <xs:element name="description" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PerSecurityResponse">
+        <xs:sequence>
+          <xs:element name="statusCode" type="tns:ResponseStatus" />
+          <xs:element name="requestId" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SubmitGetDataRequest">
+        <xs:sequence>
+          <xs:element name="headers" type="tns:GetDataHeaders" />
+          <xs:element name="fields" type="tns:Fields" />
+          <xs:element name="instruments" type="tns:Instruments" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SubmitGetDataResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PerSecurityResponse">
+            <xs:sequence>
+              <xs:element name="responseId" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="RetrieveGetDataRequest">
+        <xs:sequence>
+          <xs:element name="responseId" type="xs:string" />
+          <xs:element minOccurs="0" name="responseDate" type="xs:date" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RetrieveGetDataResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PerSecurityResponse">
+            <xs:sequence>
+              <xs:element name="responseId" type="xs:string" />
+              <xs:element minOccurs="0" name="headers" type="tns:GetDataHeaders" />
+              <xs:element minOccurs="0" name="fields" type="tns:Fields" />
+              <xs:element minOccurs="0" name="timestarted" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="instrumentDatas" type="tns:InstrumentDatas" />
+              <xs:element minOccurs="0" name="timefinished" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="SubmitCancelRequest">
+        <xs:sequence>
+          <xs:element name="responseId" type="xs:string" />
+          <xs:element name="headers" type="tns:CancelHeaders" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SubmitCancelResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PerSecurityResponse">
+            <xs:sequence>
+              <xs:element name="responseId" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="GetCorrectionsRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="responseDate" type="xs:date" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GetCorrectionsResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PerSecurityResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="headers" type="tns:GetCorrectionsHeaders" />
+              <xs:element minOccurs="0" name="timestarted" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="correctionRecords" type="tns:CorrectionRecords" />
+              <xs:element minOccurs="0" name="timefinished" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="SubmitScheduledRequest" />
+      <xs:complexType name="SubmitScheduledResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PerSecurityResponse">
+            <xs:sequence>
+              <xs:element name="responseId" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="RetrieveScheduledRequest">
+        <xs:sequence>
+          <xs:element name="responseId" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ScheduledResponses">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="fileData" type="tns:ScheduledResponse" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ScheduledResponse">
+        <xs:annotation>
+          <xs:documentation>
+				Scheduled Response consists of various PerSecurity files submitted
+				previously and scheduled for running at specified intervals
+			</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="headers" type="tns:ScheduledHeaders" />
+          <xs:element minOccurs="0" name="fields" type="tns:Fields" />
+          <xs:element minOccurs="0" name="instruments" type="tns:Instruments" />
+          <xs:element minOccurs="0" name="responseId" type="xs:string" />
+          <xs:element minOccurs="0" name="time" type="xs:time" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RetrieveScheduledResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PerSecurityResponse">
+            <xs:sequence>
+              <xs:element name="responseId" type="xs:string" />
+              <xs:element minOccurs="0" name="fileDatas" type="tns:ScheduledResponses" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="submitGetDataRequest" type="tns:SubmitGetDataRequest" />
+      <xs:element name="submitGetDataResponse" type="tns:SubmitGetDataResponse" />
+      <xs:element name="retrieveGetDataRequest" type="tns:RetrieveGetDataRequest" />
+      <xs:element name="retrieveGetDataResponse" type="tns:RetrieveGetDataResponse" />
+      <xs:element name="submitScheduledRequest" type="tns:SubmitScheduledRequest" />
+      <xs:element name="submitScheduledResponse" type="tns:SubmitScheduledResponse" />
+      <xs:element name="retrieveScheduledRequest" type="tns:RetrieveScheduledRequest" />
+      <xs:element name="retrieveScheduledResponse" type="tns:RetrieveScheduledResponse" />
+      <xs:element name="submitCancelRequest" type="tns:SubmitCancelRequest" />
+      <xs:element name="submitCancelResponse" type="tns:SubmitCancelResponse" />
+      <xs:element name="getCorrectionsRequest" type="tns:GetCorrectionsRequest" />
+      <xs:element name="getCorrectionsResponse" type="tns:GetCorrectionsResponse" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="PerSecurityWS_submitGetDataRequest">
+    <wsdl:part name="parameters" element="tns:submitGetDataRequest" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_submitGetDataResponse">
+    <wsdl:part name="result" element="tns:submitGetDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_retrieveGetDataRequest">
+    <wsdl:part name="parameters" element="tns:retrieveGetDataRequest" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_retrieveGetDataResponse">
+    <wsdl:part name="result" element="tns:retrieveGetDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_submitScheduledRequest">
+    <wsdl:part name="parameters" element="tns:submitScheduledRequest" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_submitScheduledResponse">
+    <wsdl:part name="result" element="tns:submitScheduledResponse" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_retrieveScheduledRequest">
+    <wsdl:part name="parameters" element="tns:retrieveScheduledRequest" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_retrieveScheduledResponse">
+    <wsdl:part name="result" element="tns:retrieveScheduledResponse" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_submitCancelRequest">
+    <wsdl:part name="parameters" element="tns:submitCancelRequest" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_submitCancelResponse">
+    <wsdl:part name="result" element="tns:submitCancelResponse" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_getCorrectionsRequest">
+    <wsdl:part name="parameters" element="tns:getCorrectionsRequest" />
+  </wsdl:message>
+  <wsdl:message name="PerSecurityWS_getCorrectionsResponse">
+    <wsdl:part name="result" element="tns:getCorrectionsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PerSecurityWS">
+    <wsdl:operation name="submitGetDataRequest">
+      <wsdl:input message="tns:PerSecurityWS_submitGetDataRequest" />
+      <wsdl:output message="tns:PerSecurityWS_submitGetDataResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveGetDataResponse">
+      <wsdl:input message="tns:PerSecurityWS_retrieveGetDataRequest" />
+      <wsdl:output message="tns:PerSecurityWS_retrieveGetDataResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="submitScheduledRequest">
+      <wsdl:input message="tns:PerSecurityWS_submitScheduledRequest" />
+      <wsdl:output message="tns:PerSecurityWS_submitScheduledResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveScheduledResponse">
+      <wsdl:input message="tns:PerSecurityWS_retrieveScheduledRequest" />
+      <wsdl:output message="tns:PerSecurityWS_retrieveScheduledResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="submitCancelRequest">
+      <wsdl:input message="tns:PerSecurityWS_submitCancelRequest" />
+      <wsdl:output message="tns:PerSecurityWS_submitCancelResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getCorrections">
+      <wsdl:input message="tns:PerSecurityWS_getCorrectionsRequest" />
+      <wsdl:output message="tns:PerSecurityWS_getCorrectionsResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PerSecurityWSBinding" type="tns:PerSecurityWS">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="submitGetDataRequest">
+      <soap:operation soapAction="" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveGetDataResponse">
+      <soap:operation soapAction="" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="submitScheduledRequest">
+      <soap:operation soapAction="" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveScheduledResponse">
+      <soap:operation soapAction="" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="submitCancelRequest">
+      <soap:operation soapAction="" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCorrections">
+      <soap:operation soapAction="" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PerSecurityWS">
+    <wsdl:port name="PerSecurityWSPort" binding="tns:PerSecurityWSBinding">
+      <soap:address location="https://services.bloomberg.com/datalicense/dlps/ps/20071001" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
